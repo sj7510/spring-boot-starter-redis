@@ -1,4 +1,4 @@
-package com.hujiabin.redis.consts;
+package com.baymax.redis.consts;
 
 import lombok.experimental.UtilityClass;
 

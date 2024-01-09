@@ -1,4 +1,4 @@
-package com.hujiabin.redis.lock.locker;
+package com.baymax.redis.lock.locker;
 
 import java.util.concurrent.TimeUnit;
 

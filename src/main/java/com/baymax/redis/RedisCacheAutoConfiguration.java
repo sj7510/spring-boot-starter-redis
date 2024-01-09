@@ -1,4 +1,4 @@
-package com.hujiabin.redis;
+package com.baymax.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -9,8 +9,8 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.hujiabin.redis.annotation.ExpireRedisCacheWriter;
-import com.hujiabin.redis.aspect.CacheExpireAspect;
+import com.baymax.redis.annotation.ExpireRedisCacheWriter;
+import com.baymax.redis.aspect.CacheExpireAspect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -38,16 +38,15 @@ import java.util.stream.Stream;
  * redis cache config
  *
  * @author hujiabin
- * @date 2023/11/3 14:06
  * @since 1.0
  */
 @EnableCaching
 @Configuration
-@Import({RedisClient.class, CacheExpireAspect.class})
+@Import({ RedisClient.class, CacheExpireAspect.class })
 public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
+
     @Value("${spring.application.name:unknown}")
     private String appName;
-
 
     /**
      * 注入RedisTemplate

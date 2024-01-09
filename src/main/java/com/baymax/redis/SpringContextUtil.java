@@ -1,4 +1,4 @@
-package com.hujiabin.redis;
+package com.baymax.redis;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

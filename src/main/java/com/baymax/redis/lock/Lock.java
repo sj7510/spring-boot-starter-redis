@@ -1,4 +1,4 @@
-package com.hujiabin.redis.lock;
+package com.baymax.redis.lock;
 
 import org.springframework.core.annotation.AliasFor;
 

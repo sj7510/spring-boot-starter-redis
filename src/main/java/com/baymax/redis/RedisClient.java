@@ -1,4 +1,4 @@
-package com.hujiabin.redis;
+package com.baymax.redis;
 
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;

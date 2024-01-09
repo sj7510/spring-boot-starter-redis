@@ -1,9 +1,9 @@
-package com.hujiabin.redis;
+package com.baymax.redis;
 
-import com.hujiabin.redis.lock.LockAspect;
-import com.hujiabin.redis.lock.LockProperties;
-import com.hujiabin.redis.lock.locker.Locker;
-import com.hujiabin.redis.lock.locker.RedissonLocker;
+import com.baymax.redis.lock.LockAspect;
+import com.baymax.redis.lock.LockProperties;
+import com.baymax.redis.lock.locker.Locker;
+import com.baymax.redis.lock.locker.RedissonLocker;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;

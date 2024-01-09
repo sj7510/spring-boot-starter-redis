@@ -1,7 +1,7 @@
-package com.hujiabin.redis.aspect;
+package com.baymax.redis.aspect;
 
-import com.hujiabin.redis.annotation.CacheExpire;
-import com.hujiabin.redis.annotation.CacheExpireHolder;
+import com.baymax.redis.annotation.CacheExpire;
+import com.baymax.redis.annotation.CacheExpireHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

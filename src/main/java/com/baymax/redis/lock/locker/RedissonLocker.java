@@ -1,6 +1,6 @@
-package com.hujiabin.redis.lock.locker;
+package com.baymax.redis.lock.locker;
 
-import com.hujiabin.redis.lock.LockProperties;
+import com.baymax.redis.lock.LockProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;

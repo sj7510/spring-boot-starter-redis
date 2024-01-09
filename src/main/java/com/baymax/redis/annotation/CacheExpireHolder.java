@@ -1,4 +1,4 @@
-package com.hujiabin.redis.annotation;
+package com.baymax.redis.annotation;
 
 import lombok.experimental.UtilityClass;
 

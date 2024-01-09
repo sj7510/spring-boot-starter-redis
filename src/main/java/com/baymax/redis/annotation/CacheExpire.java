@@ -1,6 +1,6 @@
-package com.hujiabin.redis.annotation;
+package com.baymax.redis.annotation;
 
-import com.hujiabin.redis.consts.Time;
+import com.baymax.redis.consts.Time;
 
 import java.lang.annotation.*;
 
