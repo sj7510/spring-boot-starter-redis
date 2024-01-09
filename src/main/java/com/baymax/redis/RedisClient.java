@@ -16,11 +16,11 @@ import java.util.function.Consumer;
  * RedisClient
  *
  * @author hujiabin
- * @date 2023/11/3 14:08
  * @since 1.0
  */
 @SuppressWarnings("all")
 public final class RedisClient {
+
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -31,8 +31,8 @@ public final class RedisClient {
      * 指定缓存失效时间
      * (命令EXPIRE)
      *
-     * @param key      键
-     * @param time     时间（秒）
+     * @param key 键
+     * @param time 时间（秒）
      * @param timeUnit 时间单位
      * @return true / false
      */
@@ -111,7 +111,6 @@ public final class RedisClient {
      *
      * @param pattern 表达式
      * @return 符合表达式的key的集合
-     * @complexity O(n)
      */
     @SuppressWarnings("all")
     @NonNull
@@ -130,14 +129,13 @@ public final class RedisClient {
         );
     }
 
-
-//    ============================== String ==============================
+    //    ============================== String ==============================
 
     /**
      * 放入缓存
      * (命令 SET)
      *
-     * @param key   键
+     * @param key 键
      * @param value 值
      */
     public void set(String key, Object value, long timeout, TimeUnit timeUnit) {
@@ -148,7 +146,7 @@ public final class RedisClient {
      * 放入缓存
      * (命令 SET)
      *
-     * @param key   键
+     * @param key 键
      * @param value 值
      */
     public void set(String key, Object value) {
@@ -181,12 +179,11 @@ public final class RedisClient {
         return key == null ? null : (T) redisTemplate.opsForValue().getAndSet(key, newValue);
     }
 
-
     /**
      * 缓存普通键值对，并设置失效时间
      *
-     * @param key     键
-     * @param value   值
+     * @param key 键
+     * @param value 值
      * @param seconds 时间（秒），如果 time <= 0 则不设置失效时间
      */
     public void set(String key, Object value, int seconds) {
@@ -201,7 +198,7 @@ public final class RedisClient {
      * 当key不存在时放入键值对
      * 如果已经存在key返回false
      *
-     * @param key   键
+     * @param key 键
      * @param value 值
      * @return true/false
      */
@@ -209,14 +206,13 @@ public final class RedisClient {
         return redisTemplate.opsForValue().setIfAbsent(key, value);
     }
 
-
     /**
      * 当key不存在时放入键值对，并在指定时间后自动删除
      * 如果已经存在key返回false
      *
-     * @param key      键
-     * @param value    值
-     * @param time     时间
+     * @param key 键
+     * @param value 值
+     * @param time 时间
      * @param timeUnit 时间单位
      * @return true/false
      */
@@ -229,7 +225,7 @@ public final class RedisClient {
      * 如果不存在key将自动创建
      * (命令INCR)
      *
-     * @param key       键
+     * @param key 键
      * @param increment 递增大小
      * @return 递增后的值
      */
@@ -255,7 +251,7 @@ public final class RedisClient {
      * 如果不存在key将自动创建
      * (命令DECR)
      *
-     * @param key       键
+     * @param key 键
      * @param decrement 递减大小
      * @return 递减后的值
      */
@@ -276,14 +272,14 @@ public final class RedisClient {
         return decrement(key, 1L);
     }
 
-//    ============================== Map ==============================
+    //    ============================== Map ==============================
 
     /**
      * 往指定HashMap中添加一对键值对，key不存在将自动创建
      * (命令HSET)
      *
-     * @param name  HashMap的名字
-     * @param key   添加的键
+     * @param name HashMap的名字
+     * @param key 添加的键
      * @param value 添加的值
      */
     public void hSet(String name, String key, Object value) {
@@ -295,7 +291,7 @@ public final class RedisClient {
      * (命令HSET)
      *
      * @param name HashMap的名字
-     * @param map  值
+     * @param map 值
      */
     public void hSet(String name, Map<String, ?> map) {
         redisTemplate.opsForHash().putAll(name, map);
@@ -306,8 +302,8 @@ public final class RedisClient {
      * （命令HGET）
      *
      * @param mapName HashMap的名字（no null）
-     * @param key     HashMap中的键（no null）
-     * @param <T>     根据实际类型自定义
+     * @param key HashMap中的键（no null）
+     * @param <T> 根据实际类型自定义
      * @return 值
      */
     @SuppressWarnings("unchecked")
@@ -320,8 +316,8 @@ public final class RedisClient {
      * （命令HMGET）
      *
      * @param mapName HashMap的名字（no null）
-     * @param key     HashMap中的键，传多个（no null）
-     * @param <T>     根据实际类型自定义
+     * @param key HashMap中的键，传多个（no null）
+     * @param <T> 根据实际类型自定义
      * @return list
      */
     public <T> List<T> hMultiGet(String mapName, String... key) {
@@ -339,13 +335,12 @@ public final class RedisClient {
         return redisTemplate.<String, T>opsForHash().entries(mapName);
     }
 
-
     /**
      * 删除 HashMap 中的值
      * (命令HDEL)
      *
      * @param mapName HashMap的名字
-     * @param keys    HashMap中的key（可以多个，no null）
+     * @param keys HashMap中的key（可以多个，no null）
      * @return 成功删除个数
      */
     public long hDelete(String mapName, Object... keys) {
@@ -357,7 +352,7 @@ public final class RedisClient {
      * (命令 HINCRBY)
      *
      * @param hashMapName HashMap的名字（no null）
-     * @param key         HashMap中的key（no null）
+     * @param key HashMap中的key（no null）
      * @return true / false
      */
     public long hIncrement(String hashMapName, String key) {
@@ -369,7 +364,7 @@ public final class RedisClient {
      * (命令 HINCRBY)
      *
      * @param hashMapName HashMap的名字（no null）
-     * @param key         HashMap中的key（no null）
+     * @param key HashMap中的key（no null）
      * @return true / false
      */
     public Long hIncrementBy(String hashMapName, String key, long delta) {
@@ -381,7 +376,7 @@ public final class RedisClient {
      * (命令 HEXISTS)
      *
      * @param hashMapName HashMap的名字（no null）
-     * @param hashKey     HashMap中的key（no null）
+     * @param hashKey HashMap中的key（no null）
      * @return true / false
      */
     public boolean hExists(String hashMapName, Object hashKey) {
@@ -393,8 +388,8 @@ public final class RedisClient {
      * (命令 HSETNX)
      *
      * @param hashMapName HashMap的名字
-     * @param hashKey     key（no null）
-     * @param value       value（no null）
+     * @param hashKey key（no null）
+     * @param value value（no null）
      * @return true / false
      */
     public boolean hSetNx(String hashMapName, String key, Object value) {
@@ -433,7 +428,6 @@ public final class RedisClient {
     public <T> List<T> hValues(String hashMapName) {
         return redisTemplate.<String, T>opsForHash().values(hashMapName);
     }
-
 
     //    ============================== zset ==============================
 
@@ -574,7 +568,7 @@ public final class RedisClient {
      *
      * @param key
      * @param start 开始索引
-     * @param end   结束索引
+     * @param end 结束索引
      * @return 元素集合
      */
     public <T> Set<T> zRange(String key, long start, long end) {
@@ -649,10 +643,10 @@ public final class RedisClient {
      * (命令 ZREVRANGEBYSCORE )
      *
      * @param key
-     * @param min    最小分数值
-     * @param max    最大分数值
+     * @param min 最小分数值
+     * @param max 最大分数值
      * @param offset 偏移量
-     * @param count  最大元素集合
+     * @param count 最大元素集合
      * @return 元素集合
      */
     public <T> Set<T> zReverseRangeByScore(String key, double min, double max, long offset, long count) {
@@ -664,16 +658,17 @@ public final class RedisClient {
      * 命令：ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
      * 时间复杂度：O(log(N)+M) N是zest长度，M是返回数量
      *
-     * @param key    redis key
-     * @param min    最小分数（含）
-     * @param max    最大分数（含）
+     * @param key redis key
+     * @param min 最小分数（含）
+     * @param max 最大分数（含）
      * @param offset 偏移量
-     * @param count  返回数量
+     * @param count 返回数量
      * @param <T>
      * @return 包含元素和分数的TypedTuple集合
      * @see <a href="https://redis.io/commands/zrevrangebyscore">Redis Documentation: ZREVRANGEBYSCORE</a>
      */
-    public <T> Set<ZSetOperations.TypedTuple<T>> zReverseRangeByScoreWithScores(String key, double min, double max, long offset, long count) {
+    public <T> Set<ZSetOperations.TypedTuple<T>> zReverseRangeByScoreWithScores(String key, double min, double max, long offset,
+            long count) {
         return ((RedisTemplate<String, T>) redisTemplate).opsForZSet().reverseRangeByScoreWithScores(key, min, max, offset, count);
     }
 
@@ -850,14 +845,13 @@ public final class RedisClient {
         return (Set<T>) redisTemplate.opsForSet().intersect(key, otherKeys);
     }
 
-
     //    ============================== list ==============================
 
     /**
      * 查询list中指定位置元素
      * (命令 LINDEX)
      *
-     * @param key   key
+     * @param key key
      * @param index 位置
      */
     public <T> T lIndex(String key, long index) {
@@ -909,7 +903,6 @@ public final class RedisClient {
     public <T> T lPop(String key) {
         return (T) redisTemplate.opsForList().rightPop(key);
     }
-
 
     /**
      * 从右边批量塞入元素
@@ -985,7 +978,7 @@ public final class RedisClient {
      * list截取列表
      * (命令 LTRIM)
      *
-     * @param key   key
+     * @param key key
      * @param start
      * @param end
      */
@@ -997,9 +990,9 @@ public final class RedisClient {
      * list设置指定位置的元素
      * (命令 LSET)
      *
-     * @param key   key
+     * @param key key
      * @param index 位置
-     * @param v     value
+     * @param v value
      */
     public void lSet(String key, long index, Object v) {
         redisTemplate.opsForList().set(key, index, v);
@@ -1029,6 +1022,7 @@ public final class RedisClient {
      */
     public <T> List<T> pipelined(Consumer<RedisOperations<String, Object>> consumer) {
         return (List<T>) redisTemplate.executePipelined(new SessionCallback<Object>() {
+
             @Override
             public Object execute(RedisOperations operations) throws DataAccessException {
                 consumer.accept(operations);
@@ -1050,7 +1044,7 @@ public final class RedisClient {
      * hyperLogLogAdd 加入元素
      * (命令 PFADD)
      *
-     * @param key   key
+     * @param key key
      * @param value value
      */
     public void pfAdd(String key, Object value) {
@@ -1073,9 +1067,9 @@ public final class RedisClient {
      * bitmap设置指定位置 为 1或0
      * (命令 SETBIT)
      *
-     * @param key    key
+     * @param key key
      * @param offset 偏移量
-     * @param v      true / false
+     * @param v true / false
      */
     public boolean setBit(String key, long offset, boolean value) {
         return redisTemplate.opsForValue().setBit(key, offset, value);
@@ -1085,7 +1079,7 @@ public final class RedisClient {
      * bitmap获取指定位置结果
      * (命令 GETBIT)
      *
-     * @param key    key
+     * @param key key
      * @param offset 偏移量
      * @return true / false
      */
@@ -1107,12 +1101,13 @@ public final class RedisClient {
      * bitField
      * (命令 BITFIELD)
      *
-     * @param key                 key
+     * @param key key
      * @param bitFieldSubCommands demo: BitFieldSubCommands bitFieldSubCommands =BitFieldSubCommands.create().get(BitFieldSubCommands.BitFieldType.UINT_16).valueAt(0);
      */
     public List<Long> bitField(String key, BitFieldSubCommands bitFieldSubCommands) {
         return redisTemplate.opsForValue().bitField(key, bitFieldSubCommands);
     }
+
 }
 
 

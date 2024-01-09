@@ -19,19 +19,18 @@ import org.springframework.context.annotation.Import;
  * Redisson配置
  *
  * @author hujiabin
- * @date 2023/7/19 13:21
  * @since 1.0
  */
 @Configuration(proxyBeanMethods = false)
 @Import(LockAspect.class)
-@EnableConfigurationProperties({RedisProperties.class, LockProperties.class})
+@EnableConfigurationProperties({ RedisProperties.class, LockProperties.class })
 public class RedissonAutoConfiguration {
 
     @Bean
     public RedissonClient redissonClient(@Value("${spring.redis.host}") String host,
-                                         @Value("${spring.redis.port}") String port,
-                                         @Value("${spring.redis.password}") String password,
-                                         @Value("${spring.redis.database:0}") int database
+            @Value("${spring.redis.port}") String port,
+            @Value("${spring.redis.password}") String password,
+            @Value("${spring.redis.database:0}") int database
     ) {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://" + host + ":" + port).setPassword(password);
@@ -48,4 +47,5 @@ public class RedissonAutoConfiguration {
     public Locker locker(LockProperties lockProperties, RedissonClient redissonClient) {
         return new RedissonLocker(lockProperties.getType(), redissonClient);
     }
+
 }

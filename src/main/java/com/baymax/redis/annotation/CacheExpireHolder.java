@@ -8,7 +8,6 @@ import java.util.Stack;
  * 缓存过期Holder
  *
  * @author hujiabin
- * @date 2023/7/19 11:49
  * @since 1.0
  */
 @UtilityClass
@@ -19,7 +18,6 @@ public class CacheExpireHolder {
      */
     private static final ThreadLocal<Stack<Long>> TIME_LOCAL = ThreadLocal.withInitial(Stack::new);
 
-
     /**
      * 获取当前方法失效时间（毫秒）
      */
@@ -29,7 +27,6 @@ public class CacheExpireHolder {
         return !stack.isEmpty() ? stack.peek() : null;
     }
 
-
     /**
      * 设置当前方法对应的缓存失效时间（毫秒）
      *
@@ -38,7 +35,6 @@ public class CacheExpireHolder {
     public static void set(long milliseconds) {
         TIME_LOCAL.get().push(milliseconds);
     }
-
 
     /**
      * 移除
@@ -50,4 +46,5 @@ public class CacheExpireHolder {
             TIME_LOCAL.remove();
         }
     }
+
 }

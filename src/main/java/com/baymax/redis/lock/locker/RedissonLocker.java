@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
  * Redisson加锁实现
  *
  * @author hujiabin
- * @date 2023/7/19 13:10
  * @since 1.0
  */
 @AllArgsConstructor
@@ -20,9 +19,10 @@ import java.util.concurrent.TimeUnit;
 public class RedissonLocker implements Locker {
 
     private static final ThreadLocal<RLock> LOCK_THREAD_LOCAL = new ThreadLocal<>();
-    private final LockProperties.LockType lockType;
-    private final RedissonClient redissonClient;
 
+    private final LockProperties.LockType lockType;
+
+    private final RedissonClient redissonClient;
 
     @Override
     public boolean lock(String lockKey, int leaseTime, int waitTime, TimeUnit unit) throws InterruptedException {
@@ -51,4 +51,5 @@ public class RedissonLocker implements Locker {
                 throw new IllegalArgumentException("错误的锁类型" + lockType);
         }
     }
+
 }

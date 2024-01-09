@@ -12,10 +12,9 @@ import java.lang.annotation.*;
  * 如果不使用该注解指定@Cacheable的过期时间，将会采取RedisCacheAutoConfiguration中配置的全局缓存失效时间
  *
  * @author hujiabin
- * @date 2023/7/19 11:36
  * @since 1.0
  */
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CacheExpire {
@@ -35,4 +34,5 @@ public @interface CacheExpire {
      * 默认10毫秒
      */
     double floatRange() default 0.01;
+
 }

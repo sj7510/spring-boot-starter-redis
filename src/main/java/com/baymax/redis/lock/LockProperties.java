@@ -8,27 +8,28 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * 分布式锁配置类
  *
  * @author hujiabin
- * @date 2023/7/19 13:13
  * @since 1.0
  */
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "spring.lock")
 public class LockProperties {
+
     /**
      * 加锁失败抛出的异常信息
      * 支持spEL，允许的参数有方法的入参以及 #waitTime
      */
     String errorMsg = "系统繁忙，请稍后再试。";
+
     /**
      * 锁类型
      */
     private LockType type = LockType.REDIS_REENTRANT_LOCK;
+
     /**
      * 锁key的前缀
      */
     private String prefix = "@lock";
-
 
     public enum LockType {
         /**
@@ -45,4 +46,5 @@ public class LockProperties {
         REDIS_SPIN_LOCK,
 
     }
+
 }

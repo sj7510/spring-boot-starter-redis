@@ -22,14 +22,16 @@ import java.util.stream.Stream;
  * 分布式锁AOP
  *
  * @author hujiabin
- * @date 2023/7/19 13:27
  * @since 1.0
  */
 @Aspect
 @Slf4j
 public class LockAspect {
+
     private static final SpelExpressionParser SPEL_PARSER = new SpelExpressionParser();
+
     private static final LocalVariableTableParameterNameDiscoverer PARAMETER_NAME_DISCOVERER = new LocalVariableTableParameterNameDiscoverer();
+
     @Autowired
     private LockProperties lockProperties;
 
@@ -82,7 +84,8 @@ public class LockAspect {
         String[] lockKey = getLockKey(lockAnnotation);
         String classAndMethodName = getClassAndMethodName(joinPoint);
         // 指定了组名则使用组名，否则使用类名+方法名
-        String lockKeyPrefix = lockProperties.getPrefix() + ":" + (lockAnnotation.group().isEmpty() ? classAndMethodName : lockAnnotation.group());
+        String lockKeyPrefix =
+                lockProperties.getPrefix() + ":" + (lockAnnotation.group().isEmpty() ? classAndMethodName : lockAnnotation.group());
         if (lockKey.length == 0) {
             // 未配置@Lock的key属性
             return lockKeyPrefix;
@@ -108,7 +111,8 @@ public class LockAspect {
                         .map(exp -> SPEL_PARSER.parseExpression(exp).getValue(evaluationContext, String.class))
                         .collect(Collectors.joining(",", lockKeyPrefix + ":(", ")"));
             } catch (RuntimeException e) {
-                throw new EvaluationException(classAndMethodName + "上的注解@Lock的key属性指定有误，无法解析spEl表达式：" + classAndMethodName, e);
+                throw new EvaluationException(
+                        classAndMethodName + "上的注解@Lock的key属性指定有误，无法解析spEl表达式：" + classAndMethodName, e);
             }
         }
     }
@@ -122,6 +126,5 @@ public class LockAspect {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         return "@" + joinPoint.getTarget().getClass().getName() + "." + method.getName();
     }
-
 
 }

@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
  * 分布式锁注解默认使用redis
  *
  * @author hujiabin
- * @date 2023/7/19 23:17
  * @since 1.0
  */
 @Target(ElementType.METHOD)
@@ -62,6 +61,5 @@ public @interface Lock {
 
     @AliasFor("key")
     String[] value() default {};
-
 
 }

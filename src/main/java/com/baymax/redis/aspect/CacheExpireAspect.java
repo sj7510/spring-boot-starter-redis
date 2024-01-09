@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
  * 注意顺序要先于CacheInterceptor，否则过期时间读取不到
  *
  * @author hujiabin
- * @date 2023/7/19 12:55
  * @since 1.0
  */
 @Slf4j
@@ -32,7 +31,8 @@ public class CacheExpireAspect {
         // 过期时间（毫秒）
         long cacheExpiredMilliseconds = 1000L * cacheExpire.value();
         // 上下浮动范围（毫秒）
-        long floatRangeMilliseconds = cacheExpiredMilliseconds == 0 ? 0 : (long) (1000 * RandomUtils.nextDouble(0, cacheExpire.floatRange()));
+        long floatRangeMilliseconds =
+                cacheExpiredMilliseconds == 0 ? 0 : (long) (1000 * RandomUtils.nextDouble(0, cacheExpire.floatRange()));
         // 设置失效时间，加上随机浮动值防止缓存穿透
         CacheExpireHolder.set(cacheExpiredMilliseconds + floatRangeMilliseconds);
         try {
@@ -42,4 +42,5 @@ public class CacheExpireAspect {
             CacheExpireHolder.remove();
         }
     }
+
 }

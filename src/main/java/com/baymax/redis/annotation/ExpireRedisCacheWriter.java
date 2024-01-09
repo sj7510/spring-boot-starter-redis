@@ -24,15 +24,17 @@ import java.util.function.Function;
  * 含过期时间的RedisCacheWriter
  *
  * @author hujiabin
- * @date 2023/7/19 12:45
  * @see CacheExpire
  * @see CacheExpireHolder
  * @since 1.0
  */
 @SuppressWarnings("all")
 public class ExpireRedisCacheWriter implements RedisCacheWriter {
+
     private final RedisConnectionFactory connectionFactory;
+
     private final Duration sleepTime;
+
     private final CacheStatisticsCollector statistics;
 
     /**
@@ -44,21 +46,21 @@ public class ExpireRedisCacheWriter implements RedisCacheWriter {
 
     /**
      * @param connectionFactory must not be {@literal null}.
-     * @param sleepTime         sleep time between lock request attempts. Must not be {@literal null}. Use {@link Duration#ZERO}
-     *                          to disable locking.
+     * @param sleepTime sleep time between lock request attempts. Must not be {@literal null}. Use {@link Duration#ZERO}
+     * to disable locking.
      */
     ExpireRedisCacheWriter(RedisConnectionFactory connectionFactory, Duration sleepTime) {
         this(connectionFactory, sleepTime, CacheStatisticsCollector.none());
     }
 
     /**
-     * @param connectionFactory        must not be {@literal null}.
-     * @param sleepTime                sleep time between lock request attempts. Must not be {@literal null}. Use {@link Duration#ZERO}
-     *                                 to disable locking.
+     * @param connectionFactory must not be {@literal null}.
+     * @param sleepTime sleep time between lock request attempts. Must not be {@literal null}. Use {@link Duration#ZERO}
+     * to disable locking.
      * @param cacheStatisticsCollector must not be {@literal null}.
      */
     ExpireRedisCacheWriter(RedisConnectionFactory connectionFactory, Duration sleepTime,
-                           CacheStatisticsCollector cacheStatisticsCollector) {
+            CacheStatisticsCollector cacheStatisticsCollector) {
 
         Assert.notNull(connectionFactory, "ConnectionFactory must not be null!");
         Assert.notNull(sleepTime, "SleepTime must not be null!");
@@ -77,7 +79,6 @@ public class ExpireRedisCacheWriter implements RedisCacheWriter {
         return (name + "~lock").getBytes(StandardCharsets.UTF_8);
     }
 
-
     @Override
     public void put(@NonNull String name, @NonNull byte[] key, byte[] value, @Nullable Duration ttl) {
         Assert.notNull(name, "Name must not be null!");
@@ -86,7 +87,8 @@ public class ExpireRedisCacheWriter implements RedisCacheWriter {
         Duration expiredTime = CacheExpireHolder.get() != null ? Duration.ofMillis(CacheExpireHolder.get()) : ttl;
         execute(name, connection -> {
             if (shouldExpireWithin(expiredTime)) {
-                connection.set(key, value, Expiration.from(expiredTime.toMillis(), TimeUnit.MILLISECONDS), RedisStringCommands.SetOption.upsert());
+                connection.set(key, value, Expiration.from(expiredTime.toMillis(), TimeUnit.MILLISECONDS),
+                        RedisStringCommands.SetOption.upsert());
             } else {
                 connection.set(key, value);
             }
@@ -109,7 +111,6 @@ public class ExpireRedisCacheWriter implements RedisCacheWriter {
         }
         return result;
     }
-
 
     @Override
     public byte[] putIfAbsent(@NonNull String name, @NonNull byte[] key, @NonNull byte[] value, Duration ttl) {
@@ -143,7 +144,6 @@ public class ExpireRedisCacheWriter implements RedisCacheWriter {
         });
     }
 
-
     @Override
     public void remove(@NonNull String name, @NonNull byte[] key) {
         Assert.notNull(name, "Name must not be null!");
@@ -151,7 +151,6 @@ public class ExpireRedisCacheWriter implements RedisCacheWriter {
         execute(name, connection -> connection.del(key));
         statistics.incDeletes(name);
     }
-
 
     @Override
     public void clean(@NonNull String name, @NonNull byte[] pattern) {
@@ -179,19 +178,16 @@ public class ExpireRedisCacheWriter implements RedisCacheWriter {
         });
     }
 
-
     @Override
     @NonNull
     public CacheStatistics getCacheStatistics(@NonNull String cacheName) {
         return statistics.getCacheStatistics(cacheName);
     }
 
-
     @Override
     public void clearStatistics(@NonNull String name) {
         statistics.reset(name);
     }
-
 
     @Override
     @NonNull
@@ -269,4 +265,5 @@ public class ExpireRedisCacheWriter implements RedisCacheWriter {
             statistics.incLockTime(name, System.nanoTime() - lockWaitTimeNs);
         }
     }
+
 }

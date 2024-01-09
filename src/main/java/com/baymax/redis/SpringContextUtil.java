@@ -10,11 +10,17 @@ import org.springframework.util.StringValueResolver;
 
 import java.util.Map;
 
-
+/**
+ * spring上下文工具
+ *
+ * @author sj75
+ */
 @Component
+@SuppressWarnings("all")
 public class SpringContextUtil implements ApplicationContextAware, EmbeddedValueResolverAware {
 
     private static ApplicationContext context;
+
     private static StringValueResolver stringValueResolver;
 
     public static ApplicationContext getContext() {
@@ -92,4 +98,5 @@ public class SpringContextUtil implements ApplicationContextAware, EmbeddedValue
     public void setEmbeddedValueResolver(StringValueResolver resolver) {
         SpringContextUtil.stringValueResolver = resolver;
     }
+
 }
